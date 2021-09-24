@@ -20,14 +20,14 @@ type
         bitbtnFiltrar: TBitBtn;
         bitbtnTodos: TBitBtn;
         bitbtnAlterar: TBitBtn;
-        bitbtnIncluir: TBitBtn;
+        bitbtnIncluirFuncionario: TBitBtn;
         bitbtnConsultar: TBitBtn;
         bitbtnExcluir: TBitBtn;
         bitbtnSair: TBitBtn;
         dbgrdTodos: TDBGrid;
         procedure bitbtnTodosClick(Sender: TObject);
         procedure bitbtnSairClick(Sender: TObject);
-        procedure bitbtnIncluirClick(Sender: TObject);
+        procedure bitbtnIncluirFuncionarioClick(Sender: TObject);
         procedure bitbtnExcluirClick(Sender: TObject);
         procedure FormShow(Sender: TObject);
         procedure bitbtnAlterarClick(Sender: TObject);
@@ -81,10 +81,12 @@ begin
     frmViewManutencao.mmoObservacoes.Text := dbgrdTodos.Fields[5].AsString;
     frmViewManutencao.edtCpf.Text := dbgrdTodos.Fields[6].AsString;
 
-    frmViewManutencao.tabshtAlteracao.TabVisible := True;
-    frmViewManutencao.tabshtPesquisar.TabVisible := False;
-    frmViewManutencao.tabshtIncluir.TabVisible := False;
-    frmViewManutencao.tabshtConsulta.TabVisible := False;
+    frmViewManutencao.tabshtAlteracaoFuncionario.TabVisible := True;
+    frmViewManutencao.tabshtPesquisarFuncionario.TabVisible := False;
+    frmViewManutencao.tabshtIncluirFuncionario.TabVisible := False;
+    frmViewManutencao.tabshtConsultaFuncionario.TabVisible := False;
+    frmViewManutencao.tabshtPesquisarLojas.TabVisible := False;
+    frmViewManutencao.tabshtIncluirLojas.TabVisible := False;
 
     while not(qryLoja.Eof) do
         begin
@@ -103,10 +105,14 @@ begin
     if (frmViewManutencao = nil) then
         Application.CreateForm(TfrmViewManutencao, frmViewManutencao);
 
-    frmViewManutencao.tabshtAlteracao.TabVisible := False;
-    frmViewManutencao.tabshtPesquisar.TabVisible := False;
-    frmViewManutencao.tabshtIncluir.TabVisible := False;
-    frmViewManutencao.tabshtConsulta.TabVisible := True;
+    frmViewManutencao.tabshtAlteracaoFuncionario.TabVisible := False;
+    frmViewManutencao.tabshtPesquisarFuncionario.TabVisible := False;
+    frmViewManutencao.tabshtIncluirFuncionario.TabVisible := False;
+    frmViewManutencao.tabshtConsultaFuncionario.TabVisible := True;
+    frmViewManutencao.tabshtPesquisarLojas.TabVisible := False;
+    frmViewManutencao.tabshtIncluirLojas.TabVisible := False;
+    frmViewManutencao.tabshtConsultaLoja.TabVisible := False;
+    frmViewManutencao.tabshtAlteracaoLoja.TabVisible := False;
 
     frmViewManutencao.ShowModal;
 
@@ -158,16 +164,18 @@ begin
     if (frmViewManutencao = nil) then
         Application.CreateForm(TfrmViewManutencao, frmViewManutencao);
 
-    frmViewManutencao.tabshtAlteracao.TabVisible := False;
-    frmViewManutencao.tabshtPesquisar.TabVisible := True;
-    frmViewManutencao.tabshtIncluir.TabVisible := False;
-    frmViewManutencao.tabshtConsulta.TabVisible := False;
+    frmViewManutencao.tabshtAlteracaoFuncionario.TabVisible := False;
+    frmViewManutencao.tabshtPesquisarFuncionario.TabVisible := True;
+    frmViewManutencao.tabshtIncluirFuncionario.TabVisible := False;
+    frmViewManutencao.tabshtConsultaFuncionario.TabVisible := False;
+    frmViewManutencao.tabshtPesquisarLojas.TabVisible := False;
+    frmViewManutencao.tabshtIncluirLojas.TabVisible := False;
 
     frmViewManutencao.ShowModal;
     FreeAndNil(frmViewManutencao);
 end;
 
-procedure TfrmViewFuncionarios.bitbtnIncluirClick(Sender: TObject);
+procedure TfrmViewFuncionarios.bitbtnIncluirFuncionarioClick(Sender: TObject);
 var
       qryLoja: TFDQuery;
     controllerFuncionario: TControllerFuncionarios;
@@ -192,10 +200,13 @@ begin
         end;
 
     frmViewManutencao.edtDataRegistroIncluir.Text := DateToStr(date);
-    frmViewManutencao.tabshtAlteracao.TabVisible := False;
-    frmViewManutencao.tabshtPesquisar.TabVisible := False;
-    frmViewManutencao.tabshtIncluir.TabVisible := True;
-    frmViewManutencao.tabshtConsulta.TabVisible := False;
+    frmViewManutencao.tabshtAlteracaoFuncionario.TabVisible := False;
+    frmViewManutencao.tabshtPesquisarFuncionario.TabVisible := False;
+    frmViewManutencao.tabshtIncluirFuncionario.TabVisible := True;
+    frmViewManutencao.tabshtConsultaFuncionario.TabVisible := False;
+    frmViewManutencao.tabshtPesquisarLojas.TabVisible := False;
+    frmViewManutencao.tabshtIncluirLojas.TabVisible := False;
+
     frmViewManutencao.ShowModal;
     FreeAndNil(frmViewManutencao);
 end;

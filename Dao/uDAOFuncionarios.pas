@@ -102,9 +102,6 @@ begin
 
 end;
 
-
-
-
 function TDAOFuncionarios.selecionarFuncionarios: TFDQuery;
 var
       qryFuncionario: TFDQuery;
@@ -116,16 +113,15 @@ begin
 end;
 
 function TDAOFuncionarios.selecionarLojas: TFDQuery;
+var
+      qryLoja: TFDQuery;
+
 begin
-    var
-          qryLoja: TFDQuery;
+    qryLoja := TControllerConexao.getInstance().daoConexao.criarQuery;
 
-    begin
-        qryLoja := TControllerConexao.getInstance().daoConexao.criarQuery;
-
-        qryLoja.Open('select codigo_loja, razao_social, cnpj from lojas');
-        Result := qryLoja;
-    end;
+    qryLoja.Open('select codigo_loja, razao_social, cnpj from lojas');
+    Result := qryLoja;
 end;
+
 
 end.

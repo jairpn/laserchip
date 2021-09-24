@@ -14,7 +14,10 @@ uses
   Vcl.Themes,
   Vcl.Styles,
   uControllerFuncoes in 'Controller\uControllerFuncoes.pas',
-  uViewManutencao in 'View\uViewManutencao.pas' {frmViewManutencao};
+  uViewManutencao in 'View\uViewManutencao.pas' {frmViewManutencao},
+  uControllerLojas in 'Controller\uControllerLojas.pas',
+  uModelLojas in 'Model\uModelLojas.pas',
+  uDAOLojas in 'Dao\uDAOLojas.pas';
 
 {$R *.res}
 

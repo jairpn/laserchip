@@ -11,10 +11,10 @@ uses
 type
     TfrmViewManutencao = class(TForm)
         pgctrCrud: TPageControl;
-        tabshtAlteracao: TTabSheet;
-        tabshtPesquisar: TTabSheet;
-        tabshtIncluir: TTabSheet;
-        tabshtConsulta: TTabSheet;
+        tabshtAlteracaoFuncionario: TTabSheet;
+        tabshtPesquisarFuncionario: TTabSheet;
+        tabshtIncluirFuncionario: TTabSheet;
+        tabshtConsultaFuncionario: TTabSheet;
         lblNome: TLabel;
         lblEndereco: TLabel;
         lblCelular: TLabel;
@@ -63,17 +63,55 @@ type
         mmoObservacoesIncluir: TMemo;
         lblObservacoesIncluir: TLabel;
         Panel3: TPanel;
-        bitbtnSalvar: TBitBtn;
+        bitbtnIncluir: TBitBtn;
         bitbtnFechar: TBitBtn;
         Panel4: TPanel;
-        BitBtn4: TBitBtn;
+        bitbtnConsultarFuncionario: TBitBtn;
         BitBtn5: TBitBtn;
-    dbnavConsulta: TDBNavigator;
+        dbnavConsulta: TDBNavigator;
         dbgrdTodos: TDBGrid;
+        tabshtPesquisarLojas: TTabSheet;
+        Panel5: TPanel;
+        bitbtnPesquisarLoja: TBitBtn;
+        BitBtn6: TBitBtn;
+        Edit1: TEdit;
+        Edit5: TEdit;
+        DBGrid1: TDBGrid;
+        Label1: TLabel;
+        Label2: TLabel;
+        Label3: TLabel;
+        tabshtIncluirLojas: TTabSheet;
+        Panel6: TPanel;
+        bitbtnIncluirLoja: TBitBtn;
+        BitBtn8: TBitBtn;
+        edtCNPJ: TEdit;
+        edtRazaoSocial: TEdit;
+        Label5: TLabel;
+        Label6: TLabel;
+        tabshtAlteracaoLoja: TTabSheet;
+        edtAlterarRazaoSocial: TEdit;
+        edtAlterarCNPJ: TEdit;
+        Label4: TLabel;
+        Label9: TLabel;
+        Panel7: TPanel;
+        bitbtnRestaurarLoja: TBitBtn;
+        bitbtnAlterarLoja: TBitBtn;
+        BitBtn11: TBitBtn;
+        DBNavigator2: TDBNavigator;
+        lblCodigoLoja: TLabel;
+        edtCodigoLoja: TEdit;
+        tabshtConsultaLoja: TTabSheet;
+        Panel8: TPanel;
+        BitBtn1: TBitBtn;
+        BitBtn4: TBitBtn;
+        dbnavConsultaLoja: TDBNavigator;
+        dbgrdTodosLoja: TDBGrid;
         procedure bitbtnSairClick(Sender: TObject);
         procedure bitbtnOkClick(Sender: TObject);
-        procedure bitbtnSalvarClick(Sender: TObject);
+        procedure bitbtnIncluirClick(Sender: TObject);
         procedure FormShow(Sender: TObject);
+        procedure bitbtnIncluirLojaClick(Sender: TObject);
+        procedure bitbtnAlterarLojaClick(Sender: TObject);
         private
             { Private declarations }
         public
@@ -88,9 +126,87 @@ implementation
 {$R *.dfm}
 
 
-uses uViewFuncionarios;
+uses uViewFuncionarios, uControllerLojas, uViewLojas;
 
-procedure TfrmViewManutencao.bitbtnSalvarClick(Sender: TObject);
+procedure TfrmViewManutencao.bitbtnIncluirLojaClick(Sender: TObject);
+var
+      controllerLoja: TControllerLojas;
+    limparosEdits: TControllerFuncoes;
+begin
+    Screen.Cursor := -11;
+
+    controllerLoja := TControllerLojas.Create;
+    limparosEdits := TControllerFuncoes.Create;
+
+    try
+
+        controllerLoja.ModelLoja.enuTipo := uModelEnumerador.tipoInclusao; // Indicando que é um INSERT na tabela
+
+        if (edtRazaoSocial.Text = '') or (edtCNPJ.Text = '') then
+            begin
+                ShowMessage('Por favor, preencha os dados que faltam!');
+                Screen.Cursor := 0;
+                edtRazaoSocial.SetFocus;
+                exit;
+            end;
+        controllerLoja.ModelLoja.strRazaoSocial := edtRazaoSocial.Text;
+        controllerLoja.ModelLoja.strCNPJ := edtCNPJ.Text;
+
+        if (controllerLoja.persistir) then
+            begin
+                ShowMessage('Operação realizada com sucesso!');
+            end
+        else
+            begin
+                ShowMessage('Não foi possível realizar a operação!');
+                exit;
+            end;
+    finally
+        limparosEdits.limpaEdits(frmViewLojas);
+        FreeAndNil(controllerLoja);
+    end;
+
+    frmViewLojas.bitbtnTodos.Click;
+    Close;
+
+end;
+
+procedure TfrmViewManutencao.bitbtnAlterarLojaClick(Sender: TObject);
+var
+      controllerLoja: TControllerLojas;
+    limparosEdits: TControllerFuncoes;
+begin
+
+    controllerLoja := TControllerLojas.Create;
+
+    limparosEdits := TControllerFuncoes.Create;
+
+    try
+        controllerLoja.ModelLoja.enuTipo := uModelEnumerador.tipoAlteracao; // Indicando que é um ALTERACAO na tabela
+
+        controllerLoja.ModelLoja.intCodigo := StrToInt(edtCodigoLoja.Text);
+        controllerLoja.ModelLoja.strRazaoSocial := edtAlterarRazaoSocial.Text;
+        controllerLoja.ModelLoja.strCNPJ := edtAlterarCNPJ.Text;
+
+        if (controllerLoja.persistir) then
+            begin
+                ShowMessage('Operação realizada com sucesso!');
+            end
+        else
+            begin
+                ShowMessage('Não foi possível realizar a operação!');
+            end;
+    finally
+        limparosEdits.limpaEdits(frmViewManutencao);
+        FreeAndNil(controllerLoja);
+        FreeAndNil(limparosEdits);
+        frmViewLojas.bitbtnTodos.Click;
+        Close;
+    end;
+
+end;
+
+procedure TfrmViewManutencao.bitbtnIncluirClick(Sender: TObject);
 var
       controllerFuncionario: TControllerFuncionarios;
     tamanho: integer;
@@ -156,31 +272,65 @@ var
     qryFuncionario: TFDQuery;
     memFuncionario: TFDMemTable;
     dsGrid: TDataSource;
-begin
-    if (frmViewManutencao.tabshtConsulta.TabVisible = True) then
-        begin
 
-            estadoGrid := True;
-            qryFuncionario := TFDQuery.Create(nil);
-            controllerFuncionario := TControllerFuncionarios.Create;
-            memFuncionario := TFDMemTable.Create(nil);
-            dsGrid := TDataSource.Create(nil);
+    controllerLoja: TControllerLojas;
+    qryLoja: TFDQuery;
+    memloja: TFDMemTable;
+    dsGridLoja: TDataSource;
+
+begin
+
+    if (tabshtConsultaFuncionario.TabVisible = true) then
+        begin
+            if (frmViewManutencao.tabshtConsultaFuncionario.TabVisible = true) then
+                begin
+                    estadoGrid := true;
+                    qryFuncionario := TFDQuery.Create(nil);
+                    controllerFuncionario := TControllerFuncionarios.Create;
+                    memFuncionario := TFDMemTable.Create(nil);
+                    dsGrid := TDataSource.Create(nil);
+
+                    try
+                        qryFuncionario := controllerFuncionario.selecionar;
+                        try
+                            dsGrid.DataSet := memFuncionario;
+                            dbgrdTodos.DataSource := dsGrid;
+                            dbnavConsulta.DataSource := dsGrid;
+                            qryFuncionario.FetchAll;
+                            memFuncionario.Close;
+                            memFuncionario.Data := qryFuncionario.Data;
+                        finally
+                            qryFuncionario.Close;
+                            FreeAndNil(qryFuncionario);
+                        end;
+                    finally
+                        FreeAndNil(controllerFuncionario);
+                    end;
+                end;
+        end
+    else
+        begin
+            estadoGrid := true;
+            qryLoja := TFDQuery.Create(nil);
+            controllerLoja := TControllerLojas.Create;
+            memloja := TFDMemTable.Create(nil);
+            dsGridLoja := TDataSource.Create(nil);
 
             try
-                qryFuncionario := controllerFuncionario.selecionar;
+                qryLoja := controllerLoja.selecionar;
                 try
-                    dsGrid.DataSet := memFuncionario;
-                    dbgrdTodos.DataSource := dsGrid;
-                    dbnavConsulta.DataSource := dsGrid;
-                    qryFuncionario.FetchAll;
-                    memFuncionario.Close;
-                    memFuncionario.Data := qryFuncionario.Data;
+                    dsGridLoja.DataSet := memloja;
+                    dbgrdTodosLoja.DataSource := dsGridLoja;
+                    dbnavConsultaLoja.DataSource := dsGridLoja;
+                    qryLoja.FetchAll;
+                    memloja.Close;
+                    memloja.Data := qryLoja.Data;
                 finally
-                    qryFuncionario.Close;
-                    FreeAndNil(qryFuncionario);
+                    qryLoja.Close;
+                    FreeAndNil(qryLoja);
                 end;
             finally
-                FreeAndNil(controllerFuncionario);
+                FreeAndNil(controllerLoja);
             end;
         end;
 end;

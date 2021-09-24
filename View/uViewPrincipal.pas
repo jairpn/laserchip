@@ -43,6 +43,8 @@ implementation
 {$R *.dfm}
 
 
+uses uViewLojas;
+
 procedure TfrmViewPrincipal.bitbtnLojasClick(Sender: TObject);
 var
       FechaFormulario: TControllerFuncoes;
@@ -50,6 +52,12 @@ begin
     FechaFormulario := TControllerFuncoes.Create;
 
     FechaFormulario.fechaForms;
+
+    if (frmViewLojas = nil) then
+        Application.CreateForm(TfrmViewLojas, frmViewLojas);
+    frmViewLojas.ShowModal;
+    FreeAndNil(frmViewLojas);
+
 end;
 
 procedure TfrmViewPrincipal.bitbtnFecharClick(Sender: TObject);

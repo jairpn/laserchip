@@ -4,8 +4,8 @@ object frmViewFuncionarios: TfrmViewFuncionarios
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
   Caption = 'Funcion'#225'rios'
-  ClientHeight = 433
-  ClientWidth = 871
+  ClientHeight = 434
+  ClientWidth = 868
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -27,22 +27,22 @@ object frmViewFuncionarios: TfrmViewFuncionarios
   object Panel2: TPanel
     Left = 0
     Top = 0
-    Width = 871
-    Height = 433
+    Width = 868
+    Height = 434
     Align = alClient
     TabOrder = 1
-    ExplicitWidth = 867
-    ExplicitHeight = 430
+    ExplicitWidth = 864
+    ExplicitHeight = 431
     object Panel1: TPanel
-      Left = 704
+      Left = 701
       Top = 1
       Width = 166
-      Height = 431
+      Height = 432
       Align = alRight
       BevelInner = bvLowered
       TabOrder = 0
-      ExplicitLeft = 700
-      ExplicitHeight = 428
+      ExplicitLeft = 697
+      ExplicitHeight = 429
       object bitbtnFiltrar: TBitBtn
         Left = 24
         Top = 33
@@ -367,10 +367,10 @@ object frmViewFuncionarios: TfrmViewFuncionarios
         TabOrder = 2
         OnClick = bitbtnAlterarClick
       end
-      object bitbtnIncluir: TBitBtn
+      object bitbtnIncluirFuncionario: TBitBtn
         Tag = 1
         Left = 24
-        Top = 131
+        Top = 134
         Width = 115
         Height = 40
         Caption = '&Incluir'
@@ -474,7 +474,7 @@ object frmViewFuncionarios: TfrmViewFuncionarios
           C890DEBD83DAB57CD8B17CD8B183DAB591DEBEA2E4C7BCEBD8D2F1E4E6F8F0F9
           FDFBFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
         TabOrder = 3
-        OnClick = bitbtnIncluirClick
+        OnClick = bitbtnIncluirFuncionarioClick
       end
       object bitbtnConsultar: TBitBtn
         Left = 24
